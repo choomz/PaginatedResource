@@ -22,9 +22,9 @@ class ResourceFactoryTest extends \PHPUnit_Framework_TestCase
      * @param mixed  $data
      * @param string $key
      */
-    public function testResourceFactory($data, $key, $expected)
+    public function testResourceFactory($data, $key, $expected, $dataType = null)
     {
-        $resource = ResourceFactory::create($data, $key);
+        $resource = ResourceFactory::create($data, $key, $dataType);
         $this->assertInstanceOf($expected, $resource);
     }
 
@@ -58,6 +58,7 @@ class ResourceFactoryTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(null, 'datakey', 'Bgy\PaginatedResource\Resource\NullResource'),
+            array(range(1, 20), 'datakey', 'Bgy\PaginatedResource\Resource\FixedArrayResource', 'fixedArray'),
             array(range(1, 20), 'datakey', 'Bgy\PaginatedResource\Resource\ArrayResource'),
             array(new \Doctrine\Common\Collections\ArrayCollection(range(1, 20)), 'datakey', 'Bgy\PaginatedResource\Resource\ArrayCollectionResource'),
             array(new \Pagerfanta\Pagerfanta(new \Pagerfanta\Adapter\NullAdapter()), 'datakey', 'Bgy\PaginatedResource\Resource\PagerfantaResource'),

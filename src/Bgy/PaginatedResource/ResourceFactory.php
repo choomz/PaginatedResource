@@ -45,10 +45,10 @@ class ResourceFactory implements ResourceFactoryInterface
      * @return ResourceInterface
      * @throws UnknownResourceException
      */
-    public static function create($data, $dataKey)
+    public static function create($data, $dataKey, $dataType = null)
     {
         $resource = null;
-        $dataType = gettype($data);
+        $dataType = ($dataType == null) ? gettype($data) : $dataType;
 
         if ('NULL' === $dataType) {
             $resourceClassName = self::$availableResources['NULL'];
