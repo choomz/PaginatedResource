@@ -10,21 +10,21 @@
 
 namespace Bgy\PaginatedResource;
 
-use Bgy\PaginatedResource\Resource\ArrayResource;
+use Bgy\PaginatedResource\Resource\FixedArrayResource;
 
 /**
- * @author Valentin Ferriere <valentin.ferriere@gmail.com>
+ * @author Boris Guéry <guery.b@gmail.com>
  */
-class ArrayResourceTest extends \PHPUnit_Framework_TestCase
+class FixedArrayResourceTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider dataProvider
      * @param array  $data
      * @param string $key
      */
-    public function testArrayResource($data, $key, $params, $expected)
+    public function testFixedArrayResource($data, $key, $expected)
     {
-        $resource = new ArrayResource($data, $key, $params['current_page'], $params['total_items'], $params['items_per_pages']);
+        $resource = new FixedArrayResource($data, $key);
         $this->assertSame($key, $resource->getDataKey());
         $this->assertSame($data, $resource->getData());
         $this->assertEquals($expected, $resource->getPaging());
@@ -36,7 +36,6 @@ class ArrayResourceTest extends \PHPUnit_Framework_TestCase
             array(
                 array('Foo', 'Bar', 'Baz', 'Fiz', 'Fuz', 'Faz'),
                 'foo',
-                array('current_page' => 1, 'total_items' => 6, 'items_per_pages' => 6),
                 new Paging(
                     6,
                     1,
@@ -48,7 +47,6 @@ class ArrayResourceTest extends \PHPUnit_Framework_TestCase
             array(
                 range(0, 99),
                 'range',
-                array('current_page' => 1, 'total_items' => 100, 'items_per_pages' => 100),
                 new Paging(
                     100,
                     1,

@@ -10,18 +10,25 @@
 
 namespace Bgy\PaginatedResource\Resource;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * @author Boris Guéry <guery.b@gmail.com>
  */
-class ArrayCollectionResource extends FixedArrayResource
+use Bgy\PaginatedResource\Paging;
+
+class FixedArrayResource extends AbstractResource
 {
-    public function __construct(ArrayCollection $data, $dataKey = 'data')
+    public function __construct(array $data, $dataKey = 'data')
     {
         parent::__construct(
-            $data->toArray(),
-            $dataKey
+            $data,
+            $dataKey,
+            new Paging(
+                count($data),
+                1,
+                count($data),
+                1,
+                count($data)
+            )
         );
     }
 }

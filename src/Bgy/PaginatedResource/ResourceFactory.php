@@ -20,6 +20,7 @@ class ResourceFactory implements ResourceFactoryInterface
     protected static $availableResources = array(
         'NULL'                                         => '\Bgy\PaginatedResource\Resource\NullResource',
         'array'                                        => '\Bgy\PaginatedResource\Resource\ArrayResource',
+        'fixedArray'                                   => '\Bgy\PaginatedResource\Resource\FixedArrayResource',
         '\Doctrine\Common\Collections\ArrayCollection' => '\Bgy\PaginatedResource\Resource\ArrayCollectionResource',
         '\Pagerfanta\Pagerfanta'                       => '\Bgy\PaginatedResource\Resource\PagerfantaResource',
     );
@@ -52,9 +53,12 @@ class ResourceFactory implements ResourceFactoryInterface
         if ('NULL' === $dataType) {
             $resourceClassName = self::$availableResources['NULL'];
             $resource = new $resourceClassName($dataKey);
+        } elseif ('fixedArray' === $dataType) {
+            $resourceClassName = self::$availableResources['fixedArray'];
+            $resource = new $resourceClassName($data, $dataKey);
         } elseif ('array' === $dataType) {
             $resourceClassName = self::$availableResources['array'];
-            $resource = new $resourceClassName($data, $dataKey);
+            $resource = new $resourceClassName($data, $dataKey, 1, count($data), count($data));
         } else {
             foreach (self::$availableResources as $dataType => $resourceClassName) {
                 if ($data instanceof $dataType) {
@@ -66,7 +70,7 @@ class ResourceFactory implements ResourceFactoryInterface
         if (null === $resource) {
             throw new UnknownResourceException('Unknown resource provided.');
         }
-
+        
         return $resource;
     }
 }

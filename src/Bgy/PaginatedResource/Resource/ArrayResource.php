@@ -10,23 +10,26 @@
 
 namespace Bgy\PaginatedResource\Resource;
 
+use Bgy\PaginatedResource\Paging;
+use Bgy\PaginatedResource\Resource\AbstractResource;
+
 /**
  * @author Boris Guéry <guery.b@gmail.com>
  */
-use Bgy\PaginatedResource\Paging;
-
 class ArrayResource extends AbstractResource
 {
-    public function __construct(array $data, $dataKey = 'data')
+    public function __construct(array $data, $dataKey = 'data', $currentPage, $totalItems, $itemsPerPage)
     {
+        $totalPages = intval(ceil($totalItems/$itemsPerPage));
+
         parent::__construct(
             $data,
             $dataKey,
             new Paging(
-                count($data),
-                1,
-                count($data),
-                1,
+                $totalItems,
+                $totalPages,
+                $itemsPerPage,
+                $currentPage,
                 count($data)
             )
         );
